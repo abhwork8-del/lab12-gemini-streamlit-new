@@ -2,7 +2,7 @@ import streamlit as st
 import google.generativeai as genai
 
 st.set_page_config(
-    page_title="AI Assistant",
+    page_title="Lab 12 Gemini",
     page_icon="🤖"
 )
 
@@ -15,27 +15,29 @@ api_key = st.text_input(
 
 if api_key:
 
-    genai.configure(
-        api_key=api_key
-    )
+    try:
+        genai.configure(api_key=api_key)
 
-    model = genai.GenerativeModel(
-        "gemini-1.5-flash"
-    )
+        model = genai.GenerativeModel(
+            "gemini-1.5-flash"
+        )
 
-    prompt = st.text_area(
-        "Enter Prompt"
-    )
+        prompt = st.text_area(
+            "Ask something"
+        )
 
-    if st.button("Generate"):
+        if st.button("Generate"):
 
-        if prompt:
+            if prompt:
 
-            response = model.generate_content(
-                prompt
-            )
+                response = model.generate_content(
+                    prompt
+                )
 
-            st.write(response.text)
+                st.write(response.text)
+
+    except Exception as e:
+        st.error(str(e))
 
 else:
-    st.warning("Enter Gemini API Key")
+    st.info("Enter Gemini API Key")
